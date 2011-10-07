@@ -1,9 +1,13 @@
 # specific files/directories
 
+assets.json
 secret.py
 
 gzipped
 static
+
+gfx/background.png
+gfx/logo.png
 
 # minified css/js files
 
