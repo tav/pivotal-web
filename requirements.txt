@@ -1,2 +1,5 @@
 gunicorn==0.13.4
 Flask==0.8
+simplejson==2.2.1
+yatiblog==1.0
+PyYAML==3.10
