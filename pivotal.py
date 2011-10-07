@@ -33,6 +33,7 @@ cache = {}
 
 base_url = "https://www.pivotaltracker.com/services/v3/projects"
 stories_url = "%s/%s/stories" % (base_url, urlquote(cfg.PROJECT_ID))
+static_url = "/static/" if cfg.DEBUG else cfg.STATIC_URL_BASE
 
 # ------------------------------------------------------------------------------
 # Utility Functions
@@ -217,10 +218,8 @@ def sync(path, clean):
         print "# Removing: %s" % filename
         remove(filename)
 
-def STATIC(file, base=cfg.STATIC_URL_BASE, debug=cfg.DEBUG, assets={}):
-    if debug:
-        return "/static/%s" % file
-    if not assets:
+def STATIC(file, base=static_url, debug=cfg.DEBUG, assets={}):
+    if debug or not assets:
         f = open('assets.json', 'rb')
         assets.update(decode_json(f))
         f.close()
