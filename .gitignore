@@ -1,6 +1,9 @@
 # specific files/directories
 
-build
+secret.py
+
+gzipped
+static
 
 # minified css/js files
 
