@@ -1,0 +1,33 @@
+# Public Domain (-) 2011 The Pivotal Web Authors.
+# See the Pivotal Web UNLICENSE file for details.
+
+generate:
+- js/pivotal-web.js:
+    source: 
+      - raw: |
+          // Public Domain (-) 2011 The Pivotal Web Authors.
+          // See the Pivotal Web UNLICENSE file for details.
+      - js/pivotal-web.coffee
+
+- gfx/*:
+    source: gfx/*
+    type: binary
+
+- css/pivotal-web.css:
+    source: 
+      - raw: |
+          /* Public Domain (-) 2011 The Pivotal Web Authors.
+           * See the Pivotal Web UNLICENSE file for details. */
+      - css/pivotal-web.sass
+    
+output.directory: static
+output.hashed: true
+output.manifest: assets.json
+
+css.embed.path.root: gfx
+css.embed.url.base: https://s3.amazonaws.com/togethr.dev/gfx
+
+profile.dev:
+  output.hashed: false
+  css.compressed: false
+  js.compressed: false
