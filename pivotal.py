@@ -223,7 +223,7 @@ def STATIC(file, base=static_url, debug=cfg.DEBUG, assets={}):
         f = open('assets.json', 'rb')
         assets.update(decode_json(f))
         f.close()
-    return "%s%s" % (base, assets[file])
+    return "%s%s" % (base, assets.get(file, file))
 
 # ------------------------------------------------------------------------------
 # Handler
