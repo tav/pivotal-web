@@ -26,8 +26,3 @@ output.manifest: assets.json
 
 css.embed.path.root: gfx
 css.embed.url.base: https://s3.amazonaws.com/togethr.dev/gfx
-
-profile.dev:
-  output.hashed: false
-  css.compressed: false
-  js.compressed: false
