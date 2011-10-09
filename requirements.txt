@@ -1,5 +1,8 @@
 gunicorn==0.13.4
 Flask==0.8
+Markdown==2.0.3
+Pygments==1.4
+pytz==2011k
 simplejson==2.2.1
 yatiblog==1.0
 PyYAML==3.10
