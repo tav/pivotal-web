@@ -2,20 +2,23 @@
 # See the Pivotal Web UNLICENSE file for details.
 
 from cStringIO import StringIO
+from datetime import datetime
 from hashlib import md5
 from os import environ, listdir, remove, stat
 from os.path import abspath, expanduser, join
 from string import digits, letters
 from sys import argv, exit
+from time import mktime, time
 from urllib import quote as urlquote
 from urllib2 import Request, urlopen
 from xml.etree.ElementTree import Element, ElementTree, SubElement, parse
 
 from flask import Flask, render_template
+from markdown import markdown
+from pytz import timezone
 from simplejson import dumps as encode_json, load as decode_json
 from yaml import dump as encode_yaml, safe_load as decode_yaml
 from yatiblog.main import match_yaml_frontmatter, replace_yaml_frontmatter
-from yatiblog.rst import render_rst
 
 import config as cfg
 try:
@@ -28,16 +31,33 @@ except ImportError:
 # ------------------------------------------------------------------------------
 
 app = Flask(__name__)
-authors = dict((k, md5(v).hexdigest()) for k, v in cfg.AUTHORS.items())
 cache = {}
 
 base_url = "https://www.pivotaltracker.com/services/v3/projects"
 stories_url = "%s/%s/stories" % (base_url, urlquote(cfg.PROJECT_ID))
 static_url = "/static/" if cfg.DEBUG else cfg.STATIC_URL_BASE
 
+tz_map = {
+    "BST": "Europe/London"
+}
+
+[v.append(md5(v[1]).hexdigest()) for v in cfg.AUTHORS.values()]
+
 # ------------------------------------------------------------------------------
 # Utility Functions
 # ------------------------------------------------------------------------------
+
+render_text = lambda text: markdown(text, ['codehilite'])
+
+def get_time(t, tz_map=tz_map, cache={}):
+    date, time, zone = t.split()
+    zone = tz_map.get(zone, zone)
+    if zone in cache:
+        zone = cache[zone]
+    else:
+        zone = cache.setdefault(zone, timezone(zone))
+    d = zone.localize(datetime(*map(int, (date.split('/') + time.split(':')))))
+    return int(mktime(d.timetuple()) * 1000)
 
 def get_stories(token, render=True, offset=0, stories=None, url=stories_url):
     if stories is None:
@@ -52,11 +72,11 @@ def get_stories(token, render=True, offset=0, stories=None, url=stories_url):
     for story in data.iter('story'):
         id = story.findtext("id")
         text = story.findtext("description")
-        updated = story.findtext("updated_at")
+        updated = get_time(story.findtext("updated_at"))
         if render:
             if id not in cache or updated != cache[id][0]:
                 if text:
-                    text = render_rst(text)
+                    text = render_text(text)
                 cache[id] = (updated, text)
             else:
                 text = cache[id][1]
@@ -64,12 +84,12 @@ def get_stories(token, render=True, offset=0, stories=None, url=stories_url):
         for note in story.iterfind("notes/note"):
             n_id = note.findtext("id")
             n_text = note.findtext("text")
-            n_updated = note.findtext("noted_at")
+            n_updated = get_time(note.findtext("noted_at"))
             if render:
                 c_id = "note-%s" % n_id
                 if c_id not in cache or n_updated != cache[c_id][0]:
                     if n_text:
-                        n_text = render_rst(n_text)
+                        n_text = render_text(n_text)
                     cache[c_id] = (n_updated, n_text)
                 else:
                     n_text = cache[c_id][1]
@@ -118,11 +138,11 @@ def get_local_stories(path, render=True, cache={}):
         if render:
             if id not in cache or m_time != cache[id][0]:
                 if text:
-                    text = render_rst(text)
+                    text = render_text(text)
                 cache[id] = (m_time, text)
             else:
                 text = cache[id][1]
-            story["text"] = render_rst(text)
+            story["text"] = render_text(text)
             append(story)
         else:
             story["text"] = text
@@ -203,7 +223,7 @@ def sync(path, clean):
             "Content-Type": "application/xml"
             })
         req.get_method = lambda: 'PUT'
-        story["updated"] = parse(urlopen(req)).findtext("updated_at")
+        story["updated"] = get_time(parse(urlopen(req)).findtext("updated_at"))
         filename = join(path, file+'.txt')
         meta = encode_yaml(story, default_flow_style=False)
         print "# Updating: %s" % filename
@@ -225,23 +245,29 @@ def STATIC(file, base=static_url, debug=cfg.DEBUG, assets={}):
         f.close()
     return "%s%s" % (base, assets.get(file, file))
 
+def get_data(authors, stories):
+    return encode_json(
+        dict(authors=authors, stories=stories)
+        ).replace('/', r'\/')
+
 # ------------------------------------------------------------------------------
 # Handler
 # ------------------------------------------------------------------------------
 
 @app.route("/")
-def root(cache=[], local=cfg.LOCAL_DIRECTORY, token=cfg.TRACKER_TOKEN):
-    if cache:
-        data = cache[0]
+def root(
+    cache=[], duration=cfg.CACHE_DURATION, authors=cfg.AUTHORS,
+    local=cfg.LOCAL_DIRECTORY, token=cfg.TRACKER_TOKEN
+    ):
+    if local:
+        data = get_data(authors, get_local_stories(local))
     else:
-        print "lookup"
-        if local:
-            stories = get_local_stories(local)
+        now = time()
+        if not (cache and (now - cache[0]) < duration):
+            data = get_data(authors, get_stories(token))
+            cache[:] = [now, data]
         else:
-            stories = get_stories(token)
-        data = dict(authors=authors, stories=stories)
-        data = encode_json(data).replace('/', r'\/')
-        cache.append(data)
+            data = cache[1]
     return render_template('site.html', cfg=cfg, data=data, STATIC=STATIC)
 
 # ------------------------------------------------------------------------------
