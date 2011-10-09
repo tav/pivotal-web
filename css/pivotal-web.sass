@@ -1,0 +1,443 @@
+// Public Domain (-) 2011 The Pivotal Web Authors.
+// See the Pivotal Web UNLICENSE file for details.
+
+// Mixins
+
+=border-radius($radius)
+  -webkit-border-radius: $radius
+  -moz-border-radius: $radius
+  border-radius: $radius
+
+=border-radius-top-right($radius)
+  -webkit-border-top-right-radius: $radius
+  -moz-border-radius-topright: $radius
+  border-top-right-radius: $radius
+
+=border-radius-bottom-right($radius)
+  -webkit-border-bottom-right-radius: $radius
+  -moz-border-radius-bottomright: $radius
+  border-bottom-right-radius: $radius
+
+=border-radius-bottom-left($radius)
+  -webkit-border-bottom-left-radius: $radius
+  -moz-border-radius-bottomleft: $radius
+  border-bottom-left-radius: $radius
+
+=border-radius-top-left($radius)
+  -webkit-border-top-left-radius: $radius
+  -moz-border-radius-topleft: $radius
+  border-top-left-radius: $radius
+
+=border-radius-top($radius)
+  +border-radius-top-left($radius)
+  +border-radius-top-right($radius)
+
+=border-radius-right($radius)
+  +border-radius-top-right($radius)
+  +border-radius-bottom-right($radius)
+
+=border-radius-bottom($radius)
+  +border-radius-bottom-right($radius)
+  +border-radius-bottom-left($radius)
+
+=border-radius-left($radius)
+  +border-radius-top-left($radius)
+  +border-radius-bottom-left($radius)
+
+// Tags
+
+code
+  background-color: #fee9cc
+  color: rgba(0, 0, 0, 0.75)
+  font-family: inconsolata, monospace
+  font-size: 16px
+  padding: 2px 4px
+
+body
+  background-color: #fff
+  background-image: embed("background.png")
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+  font-size: 16px
+  line-height: 26px
+  margin: 0
+  padding: 0
+
+a
+  color: #3b75d1
+  color: blue
+  color: #a21017
+  text-decoration: none
+
+a:active, a:hover
+  text-decoration: underline
+
+img
+  border: none
+
+input, label
+  cursor: pointer
+
+pre
+  background-color: #fefef1
+  border: 1px solid #f7a600
+  border-left: 5px solid #f7a600
+  color: #101010
+  font-family: inconsolata, monospace
+  font-size: 14px
+  line-height: 21px
+  overflow: hidden
+  padding: 12px 15px 13px 12px
+  margin: 20px 30px 0 20px
+  -webkit-border-bottom-right-radius: 12px
+  -moz-border-radius-bottomright: 12px
+  border-bottom-right-radius: 12px
+  -webkit-box-shadow: 0px 0px 7px #cacaca
+
+pre:hover
+  overflow: auto
+
+// IDs
+
+#body
+  background: #fff
+  +border-radius(9px)
+  margin: 20px auto
+  padding: 15px 14px
+  width: 900px
+
+#filters
+  line-height: 32px
+  font-size: 20px
+
+#footer
+  font-family: inconsolata, monospace
+  margin-top: 20px
+  text-align: right
+
+#header
+  margin-bottom: 10px
+
+#logo
+  background: embed("logo.png")
+  display: block
+  height: 128px
+  width: 128px
+
+#sidebar
+  background: #f5f5f5
+  border-bottom: 1px solid #ddd
+  border-left: 1px solid #ddd
+  border-top: 1px solid #ddd
+  +border-radius-left(5px)
+  display: none
+  float: right
+  padding: 10px
+  padding-right: 14px
+  margin-right: -14px
+  width: 230px
+
+#stories
+  padding: 10px 0
+  width: 620px
+
+a#title
+  color: #000
+  float: right
+  font-family: refrigerator-deluxe, sans-serif
+  font-size: 60px
+  line-height: 60px
+  text-decoration: none
+
+// Classes
+
+.clear
+  background-color: transparent
+  border: 0px solid
+  clear: both
+  height: 0
+  margin: 0
+  padding: 0
+  width: 0
+
+.codehilite .c
+  color: #919191
+.codehilite .cm
+  color: #919191
+.codehilite .cp
+  color: #919191
+.codehilite .cs
+  color: #919191
+.codehilite .c1
+  color: #919191
+
+.codehilite .err
+  color: #a61717
+  background-color: #e3d2d2
+
+.codehilite .g
+  color: #101010
+.codehilite .gd
+  color: #d22323
+.codehilite .ge
+  color: #101010
+  font-style: italic
+.codehilite .gh
+  color: #101010
+.codehilite .gi
+  color: #589819
+.codehilite .go
+  color: #6a6a6a
+.codehilite .gp
+  color: #bb8844
+.codehilite .gr
+  color: #d22323
+.codehilite .gs
+  color: #101010
+.codehilite .gt
+  color: #d22323
+.codehilite .gu
+  color: #101010
+
+.codehilite .k
+  color: #ff5600
+.codehilite .kc
+  color: #ff5600
+.codehilite .kd
+  color: #ff5600
+.codehilite .kn
+  color: #ff5600
+.codehilite .kp
+  color: #ff5600
+.codehilite .kr
+  color: #ff5600
+.codehilite .kt
+  color: #ff5600
+
+.codehilite .l
+  color: #101010
+.codehilite .ld
+  color: #101010
+
+.codehilite .m
+  color: #5d90cd
+.codehilite .mf
+  color: #5d90cd
+.codehilite .mh
+  color: #5d90cd
+.codehilite .mi
+  color: #5d90cd
+.codehilite .il
+  color: #5d90cd
+.codehilite .mo
+  color: #5d90cd
+
+.codehilite .bp
+  color: #a535ae
+.codehilite .n
+  color: #101010
+.codehilite .na
+  color: #bbbbbb
+.codehilite .nb
+  color: #a535ae
+.codehilite .nc
+  color: #101010
+.codehilite .nd
+  color: #6d8091
+.codehilite .ne
+  color: #af956f
+.codehilite .nf
+  color: #1550a2
+.codehilite .ni
+  color: #101010
+.codehilite .nl
+  color: #101010
+.codehilite .nn
+  color: #101010
+.codehilite .no
+  color: #101010
+.codehilite .nx
+  color: #101010
+.codehilite .nt
+  color: #6d8091
+.codehilite .nv
+  color: #101010
+.codehilite .vc
+  color: #101010
+.codehilite .vg
+  color: #101010
+.codehilite .vi
+  color: #101010
+.codehilite .py
+  color: #101010
+
+.codehilite .o
+  color: #101010
+.codehilite .ow
+  color: #101010
+
+.codehilite .p
+  color: #101010
+
+.codehilite .s
+  color: #00a33f
+.codehilite .sb
+  color: #00a33f
+.codehilite .sc
+  color: #00a33f
+.codehilite .sd
+  color: #767676
+.codehilite .se
+  color: #00a33f
+.codehilite .sh
+  color: #00a33f
+.codehilite .si
+  color: #00a33f
+.codehilite .sr
+  color: #00a33f
+.codehilite .ss
+  color: #00a33f
+.codehilite .sx
+  color: #00a33f
+.codehilite .s1
+  color: #00a33f
+.codehilite .s2
+  color: #00a33f
+
+.codehilite .w
+  color: #101010
+.codehilite .x
+  color: #101010
+
+.codehilite.bash .nb
+  color: #101010
+.codehilite.bash .nv
+  color: #c32528
+
+.codehilite.css .k
+  color: #606060
+.codehilite.css .nc
+  color: #c32528
+.codehilite.css .nf
+  color: #c32528
+.codehilite.css .nt
+  color: #c32528
+
+.codehilite.rst .k
+  color: #5d90cd
+.codehilite.rst .ow
+  color: #5d90cd
+.codehilite.rst .p
+  color: #5d90cd
+
+.codehilite.yaml .l-Scalar-Plain
+  color: #5d90cd
+.codehilite.yaml .p-Indicator
+  color: #101010
+
+.float-right
+  float: right
+
+.right
+  text-align: right
+
+.state
+  font-size: 16px
+
+.story
+  margin-left: 10px
+  margin-top: 10px
+  margin-bottom: 20px
+
+.story-overview
+  margin-left: 5px
+  margin-bottom: 30px
+
+.story-text
+  padding: 0px 23px
+
+.story-title
+  color: #000 !important
+  font-family: museo, serif
+  font-size: 15px
+  line-height: 22px
+  padding-bottom: 5px
+
+.tag
+  color: #fff
+  font-family: inconsolata, monospace
+  font-size: 0.8em
+  padding: 4px 4px
+
+.tag-done
+  background-color: #006400
+
+.tag-in-review
+  background-color: #3056bf
+
+.tag-label
+  background-color: #e8e8e8
+  color: #000 !important
+
+.tag-link
+  color: #3f3f3f !important
+  text-decoration: none !important
+  font-size: 0.8em
+
+.tag-needs-review
+  background-color: #ffe2ff
+  color: #000 !important
+
+.tag-todo
+  background-color: #8b0000
+
+.tag-topic
+  background-color: #696969
+
+.tag-user
+  background-color: #3056bf
+
+.tag-wip
+  background-color: #b1f2ec
+  color: #000 !important
+
+.time
+  background-color: #f5f5f5
+  color: #6a6a6a
+  font-family: inconsolata, monospace
+  font-size: 0.8em
+  padding: 4px 4px
+
+.update-browser h1
+  background-color: #f6f6f6
+  border-bottom: 2px solid #f0f0f0
+  font-family: Georgia, serif
+  font-size: 20px
+  line-height: 29px
+  margin: 0
+  padding: 16px 10px 12px 10px
+
+.update-browser .listing
+  border-top: 1px solid #e6e6e6
+
+.update-browser ul
+  margin: 20px auto 20px auto
+  padding: 0
+  width: 600px
+
+.update-browser li
+  border: 1px solid #fff
+  float: left
+  list-style-type: none
+  margin: 0
+  padding: 20px 0px
+  text-align: center
+  width: 198px
+
+.update-browser li:hover
+  border: 1px solid #d6d6d6
+  background-color: #f8f6f6
+
+.update-browser li div
+  font-size: 20px
+  line-height: 20px
+  margin-top: 16px
