@@ -2,10 +2,11 @@
 # See the Pivotal Web UNLICENSE file for details.
 
 AUTHORS = {
-    "Name": "their@email.address",
+    "nick": ["Name", "their@email.address", "twitter-id", "http://www.blog.com"]
 }
 
-DEBUG = False
+CACHE_DURATION = 60
+DEBUG = True
 LOCAL_DIRECTORY = False
 PROJECT_ID = "The Pivotal Tracker Project ID"
 PROJECT_TITLE = "Your Project Title"
