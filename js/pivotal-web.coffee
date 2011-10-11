@@ -286,7 +286,6 @@ namespace 'pivotal', (exports, root) ->
         $input.attr("checked", false)
       for own tag, [_, $input] of $states
         $input.attr("checked", false)
-      $all.attr('checked', true)
       showAll()
     else
       $all.attr('checked', false)
@@ -309,6 +308,7 @@ namespace 'pivotal', (exports, root) ->
     return
 
   showAll = ->
+    $all.attr('checked', true)
     for story in exports.overviewStories
       if story._root
         story.html.show()
