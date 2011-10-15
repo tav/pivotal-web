@@ -307,7 +307,7 @@ namespace 'pivotal', (exports, root) ->
     showStories show
     return
 
-  showAll = ->
+  showAll = (ignoreHash) ->
     $all.attr('checked', true)
     for story in exports.overviewStories
       if story._root
@@ -316,8 +316,9 @@ namespace 'pivotal', (exports, root) ->
         story.html.hide()
     for story in exports.stories
       story.html.show()
-    if window.location.hash
-      window.location.hash = "#"
+    if not ignoreHash
+      if window.location.hash
+        window.location.hash = "#"
 
   showStories = (show) ->
     l = show.length
@@ -376,7 +377,6 @@ namespace 'pivotal', (exports, root) ->
   exports.setup = ->
 
     $filters = $ '#filters'
-    $sidebar = $ '#sidebar'
     $stories = $ '#stories'
 
     for story in PIVOTAL_DATA['stories']
@@ -504,14 +504,11 @@ namespace 'pivotal', (exports, root) ->
             for _, [_state, $html] of $states
               if _req is _state
                 $html.attr('checked', true)
-        showStories(request)
+        showStories request
       else
-        showAll()
+        showAll true
     else
-      showAll()
-
-    # Reveal the sidebar.
-    $sidebar.show()
+      showAll true
 
 # ------------------------------------------------------------------------------
 # String Utilities
@@ -547,6 +544,9 @@ initApp = ->
   if browser.validateSupport()
     return
   pivotal.setup()
+  setTimeout(->
+    $('#sidebar').show()
+  50)
 
 # ------------------------------------------------------------------------------
 # Startup

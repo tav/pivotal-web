@@ -47,7 +47,10 @@ tz_map = {
 # Utility Functions
 # ------------------------------------------------------------------------------
 
-render_text = lambda text: markdown(text, ['codehilite'])
+def render_text(text):
+    if not isinstance(text, unicode):
+        text = unicode(text, 'utf-8')
+    return markdown(text, ['codehilite'])
 
 def get_time(t, tz_map=tz_map, cache={}):
     date, time, zone = t.split()
